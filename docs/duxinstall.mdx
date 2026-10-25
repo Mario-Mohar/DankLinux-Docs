@@ -16,7 +16,7 @@ import Hero from '@site/src/components/Hero';
   hideTitle={true}
 />
 
-The **Dux Installer** (`dankinstall` / `dms install`) sets up the full [Dux Shell](./dms/overview.mdx) desktop experience - wallpapers, auto-theming, notifications, lock screen, and everything else you'd expect from a modern desktop. It installs packages and configures user-level settings for your compositor and terminal. If you already have niri or Hyprland set up, the installer can work around your existing config (and always backs things up before making changes).
+The **Dux Installer** (`duxinstall`) sets up the full [Dux Shell](./dms/overview.mdx) desktop experience - wallpapers, auto-theming, notifications, lock screen, and everything else you'd expect from a modern desktop. It installs packages and configures user-level settings for your compositor and terminal. If you already have niri or Hyprland set up, the installer can work around your existing config (and always backs things up before making changes).
 
 ## Quickstart
 
@@ -81,7 +81,7 @@ sudo -v && curl -fsSL https://install.duxlabs.dev | sh -s -- \
 
 :::info[Logs]
 
-Logs are written to `/tmp/dankinstall-<timestamp>.log`. Set `DANKINSTALL_LOG_DIR` to override the directory.
+Logs are written to `/tmp/duxinstall-<timestamp>.log`. Set `DUXINSTALL_LOG_DIR` to override the directory.
 
 :::
 
@@ -89,7 +89,7 @@ Logs are written to `/tmp/dankinstall-<timestamp>.log`. Set `DANKINSTALL_LOG_DIR
 
 ### Core Components
 - **[Dux Shell](./dms/overview.mdx)** - The desktop shell built with quickshell & Go.
-- **Compositor** - Your choice of [niri](https://github.com/niri-wm/niri) or [Hyprland](https://hypr.land). With Hyprland, dankinstall also installs `hyprland-guiutils` (Hyprland's dialogs and helper apps). DMS needs Hyprland 0.55 or newer; on an older Hyprland, dankinstall won't write the Lua config
+- **Compositor** - Your choice of [niri](https://github.com/niri-wm/niri) or [Hyprland](https://hypr.land). With Hyprland, duxinstall also installs `hyprland-guiutils` (Hyprland's dialogs and helper apps). DMS needs Hyprland 0.55 or newer; on an older Hyprland, duxinstall won't write the Lua config
 - **Terminal** - Ghostty, with Kitty and Alacritty as alternatives
 - **dms CLI** - Backend service providing dbus APIs, plugin management, and wayland protocol implementations
 
@@ -152,9 +152,9 @@ Packages come from the [Dux OBS repository](./repo#debian). **niri only** - Debi
 
 **Supported:** PikaOS 4+ (Nest, Debian Sid based)
 
-Everything comes from the PikaOS repository: PikaOS mirrors the DankLinux packages (dms, dms-greeter, danksearch, dankcalendar) and builds its own quickshell, niri, Hyprland, matugen and ghostty. dankinstall adds no third-party repositories on PikaOS.
+Everything comes from the PikaOS repository: PikaOS mirrors the DankLinux packages (dms, dms-greeter, danksearch, dankcalendar) and builds its own quickshell, niri, Hyprland, matugen and ghostty. duxinstall adds no third-party repositories on PikaOS.
 
-PikaOS also ships `pika-shell-profile-dank`, its own DMS session profile applied with `pika-shell-apply`. dankinstall writes its own compositor configs instead; pick one or the other.
+PikaOS also ships `pika-shell-profile-dank`, its own DMS session profile applied with `pika-shell-apply`. duxinstall writes its own compositor configs instead; pick one or the other.
 
 ### openSUSE Tumbleweed
 
@@ -250,7 +250,7 @@ You can also run `systemctl --user edit dms` and add `Environment=VAR=Value` lin
 
 ### Privilege Escalation
 
-Any `dms` CLI command that needs root - `dankinstall`, `dms-greeter sync`, `dms-greeter install`, and the like - will prompt when both `sudo` and `run0` are detected:
+Any `dms` CLI command that needs root - `duxinstall`, `dms-greeter sync`, `dms-greeter install`, and the like - will prompt when both `sudo` and `run0` are detected:
 
 ```
 Multiple privilege escalation tools detected:

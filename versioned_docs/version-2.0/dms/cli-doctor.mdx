@@ -332,7 +332,7 @@ systemctl --user status graphical-session.target
 
 Compositors with native systemd session integration (niri) activate the target themselves. Others need a compositor-specific session target that pulls it in, started from the compositor config.
 
-On Hyprland, `hyprland-session.target` must exist and Hyprland must start it. Hyprland 0.57 and newer ship this unit in `/usr/lib/systemd/user/` (or `/usr/local/lib/systemd/user/`); when it's there, `dankinstall` and `dms setup` use it and remove their own copy from `~/.config/systemd/user/`. On older Hyprland they write the unit below. A hand-written unit is left alone either way:
+On Hyprland, `hyprland-session.target` must exist and Hyprland must start it. Hyprland 0.57 and newer ship this unit in `/usr/lib/systemd/user/` (or `/usr/local/lib/systemd/user/`); when it's there, `duxinstall` and `dms setup` use it and remove their own copy from `~/.config/systemd/user/`. On older Hyprland they write the unit below. A hand-written unit is left alone either way:
 
 ```ini title="~/.config/systemd/user/hyprland-session.target"
 [Unit]
