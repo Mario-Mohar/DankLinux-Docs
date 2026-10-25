@@ -384,11 +384,16 @@ Official `dms-greeter` / `dms-greeter-git` packages (Arch AUR, Fedora, Debian, U
 
 ### Immutable and image-based systems
 
-On Fedora Atomic, Universal Blue, bootc, [Zirconium](https://github.com/zirconium-dev/zirconium/), and similar systems:
+On Fedora Atomic, Universal Blue, bootc, and similar rpm-ostree systems the greeter package is layered onto the image and configured after a reboot:
 
-- Install **`dms-greeter` or `dms-greeter-git` from your distro repo** (layered package or image build). Do **not** rely on `dms-greeter install`, `dms-greeter enable`, or `dms-greeter uninstall` - those commands are disabled on immutable systems by CLI policy.
-- After installing or upgrading the greeter package, **reboot once** if `getent passwd greeter` is empty (sysusers runs early in boot).
-- Configure `/etc/greetd/config.toml`, enable `greetd`, and set up theme sync using your distro or image documentation. `dms-greeter sync` may still work for theme files if not blocked by your image policy.
+1. Layer the package: `sudo rpm-ostree install dms-greeter` (or `dms-greeter-git`). It pulls in greetd.
+2. **Reboot** so the new deployment and the sysusers `greeter` account are active (`getent passwd greeter` is empty until then).
+3. Run `dms-greeter install --yes` as your normal user, **without sudo**. The command escalates itself where needed and refuses to run under sudo, because the group membership, ACLs, and theme sync would otherwise land on root.
+4. Reboot again to land on the Dux greeter.
+
+The installer writes only `/etc/greetd/config.toml`, `/etc/pam.d/greetd`, your group membership, `/var/cache/dms-greeter`, the SELinux context, and the greetd service symlink. On rpm-ostree the `greeter` group lives in `/usr/lib/group`; the installer copies it into `/etc/group` so `usermod` works. `dms-greeter enable`, `uninstall`, and `sync` work the same way. To remove the greeter, run `dms-greeter uninstall`, then `sudo rpm-ostree uninstall dms-greeter`.
+
+Images that ship their own `/usr/share/dms/cli-policy.json`, such as [Zirconium](https://github.com/zirconium-dev/zirconium/), may still block these commands. Follow that repos documentation instead.
 
 Verify the account:
 
@@ -452,6 +457,8 @@ A Wayland compositor (`niri`, `hyprland`, `sway`, …) is required and is not pu
 
 
 If you enable `dms-greeter` in the Dux Installer, the full greeter setup (permissions, ACLs, greetd configuration, service enablement) runs automatically at the end of the install process. No further steps are required.
+
+On image-based hosts (Fedora Atomic, bootc) the installer does not run the greeter setup itself. Its completion screen prints `dms-greeter install --yes`; run that afterwards as your normal user, without sudo. See [Immutable and image-based systems](#immutable-and-image-based-systems).
 
 If you skipped it during the installer setup and want to add it later, install the package for your distro (see the sections above) and then proceed to [Completing Setup](#completing-setup).
 

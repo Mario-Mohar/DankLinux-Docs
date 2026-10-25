@@ -89,6 +89,33 @@ sudo dnf install dms
 
 The COPR repositories also provide companion packages such as `quickshell-git`, `dankcalendar`, `matugen`, and other utilities used by the default configuration.
 
+### Fedora Atomic & bootc images
+
+Silverblue, Kinoite, Sericea, Onyx, Bazzite, Bluefin, Aurora, and other rpm-ostree or bootc images don't take `dnf install`. Packages are layered onto the image with `rpm-ostree` and become active after a reboot. The [Dux Installer](../duxinstall) detects these hosts and runs in two passes; it never installs packages or asks for a password on an image.
+
+1. Run `dankinstall`, pick your compositor and terminal. The **Packages To Layer** screen prints the exact `rpm-ostree` commands for your selection.
+2. Run those commands and reboot.
+3. Run `dankinstall` again. It resumes from the saved choices (`~/.local/state/dankinstall/resume.json`), re-checks the packages, and deploys the configuration into your home directory.
+
+Headless works the same way: `dankinstall -c niri -t ghostty -y` prints the layer commands and exits non-zero while packages are missing. Rerun the identical command after the reboot to deploy configs.
+
+To layer the packages yourself instead (niri and ghostty shown):
+
+```bash
+sudo curl -fsSLo /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:avengemedia:dms.repo \
+  https://copr.fedorainfracloud.org/coprs/avengemedia/dms/repo/fedora-$(rpm -E %fedora)/avengemedia-dms-fedora-$(rpm -E %fedora).repo
+sudo rpm-ostree install dms niri ghostty quickshell matugen xwayland-satellite
+systemctl reboot
+```
+
+Then run [`dms setup`](./cli-setup) to deploy the configs. Nothing is written outside your home directory.
+
+Update with `sudo rpm-ostree upgrade` (or `dms system update`), which upgrades the image and the layered packages together; `dms update` refuses to run on image-based systems. Uninstall with `sudo rpm-ostree uninstall dms`.
+
+[Zirconium](https://github.com/zirconium-dev/zirconium/) is a ready-made bootc image with Dux Shell preinstalled: `sudo bootc switch ghcr.io/zirconium-dev/zirconium:latest`.
+
+For the greeter on these images, see [Immutable and image-based systems](../dms-greeter/installation#immutable-and-image-based-systems).
+
 ## Debian & Ubuntu
 
 Dux Shell is available through Open Build Service (OBS) for Debian and Launchpad PPA for Ubuntu.

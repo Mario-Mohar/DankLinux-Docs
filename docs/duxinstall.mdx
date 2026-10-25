@@ -40,6 +40,8 @@ sudo -v && curl -fsSL https://install.duxlabs.dev | sh -s -- -c niri -t ghostty 
 
 Headless mode needs cached credentials or a passwordless rule for your privilege escalation tool (sudo, doas, or run0) — otherwise it errors out before doing anything. With sudo, run `sudo -v` first.
 
+On an image-based host (Fedora Atomic, bootc) headless mode never installs packages. If anything is missing it prints the `rpm-ostree` commands and exits non-zero; layer them, reboot, and rerun the same command to deploy the configuration.
+
 ### Flags
 
 | Flag | Short | Description |
@@ -119,6 +121,12 @@ If you're using archinstall, the `minimal` profile with `NetworkManager` for net
 Almost everything comes from official repos or COPR repositories (`avengemedia/danklinux`, `avengemedia/dms`, `lionheartp/Hyprland` for Hyprland and hyprland-guiutils, `niri-wm/niri`). Only dgop needs to be built from source with Go.
 
 The installer is tested on Workstation Edition but should work fine on any Fedora flavor.
+
+### Fedora Atomic & bootc images
+
+**Supported:** Silverblue, Kinoite, Sericea, Onyx, Bazzite, Bluefin, Aurora, Zirconium, and other rpm-ostree or bootc images based on Fedora
+
+The installer never runs a package command or asks for a password here. It checks what the image already has, prints the `rpm-ostree install` commands for anything missing, and stops. After you layer the packages and reboot, run it again: it resumes with your earlier choices and deploys the configuration into your home directory. Stable/git switches print `rpm-ostree install <new> --uninstall <old>` the same way. The greeter is not set up by the installer on images; it prints `dms-greeter install --yes` to run afterwards. Details and the manual commands are in [Installation](./dms/installation#fedora-atomic--bootc-images).
 
 ### Enterprise Linux 10
 

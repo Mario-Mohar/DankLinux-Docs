@@ -19,6 +19,10 @@ The `dms setup` command generates default configuration files for your composito
 
 Running `dms setup` with no arguments deploys all defaults at once. You can also deploy individual configs one at a time.
 
+:::note[Image-based systems]
+`dms setup` works unchanged on Fedora Atomic, bootc, and other image-based systems because it only writes to your home directory. On those hosts the [Dux Installer](../duxinstall) runs this same config deployment once the packages have been layered and the system rebooted. See [Fedora Atomic & bootc images](./installation#fedora-atomic--bootc-images).
+:::
+
 ## Quick Start
 
 Deploy all default configs:
